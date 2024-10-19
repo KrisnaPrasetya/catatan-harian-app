@@ -1,69 +1,89 @@
-import 'package:get/get.dart';
+import 'dart:convert';
+
+import 'package:daily_notes_app/core/services/local_storage_service.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class NotepadDetailController extends GetxController {
-  final TextEditingController titleController = TextEditingController(),
-      contentController = TextEditingController();
+  final TextEditingController titleController = TextEditingController(), contentController = TextEditingController();
   Map<String, dynamic>? notepad;
+  final LocalStorageService storage = LocalStorageService();
 
-  String? originalTitle, originalContent;
-
-  @override
-  void onInit() {
-    super.onInit();
-    assignNotepad(); 
+  // Fungsi untuk mengisi data catatan yang akan diedit
+  void assignTextController({required String title, required String content}) {
+    titleController.text = title;
+    contentController.text = content;
+    update();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-    assignNotepad(); 
+  // Fungsi untuk menambahkan catatan baru
+  void _addNotepad(Map<String, dynamic>? notepad) {
+    storage.read(key: 'currentUsername').then((currentUsername) {
+      print('currentUsername: $currentUsername');
+      if (currentUsername != null) {
+        print('notepads_$currentUsername');
+        storage.read(key: 'notepads_$currentUsername').then((storedNotepads) {
+          List<Map<String, dynamic>> notepads = [];
+          if (storedNotepads != null) notepads = List<Map<String, dynamic>>.from(jsonDecode(storedNotepads));
+          if (notepad != null) {
+            int index = notepads.indexWhere((element) => element == notepad);
+            if (index != -1) {
+              notepads[index] = notepad;
+            } else {
+              notepads.add(notepad);
+            }
+            storage.write(key: 'notepads_$currentUsername', value: jsonEncode(notepads));
+            Get.back(result: true);
+          }
+        });
+      }
+    });
   }
 
-  @override
-  void onClose() {
-    titleController.dispose();
-    contentController.dispose();
-    super.onClose();
-  }
-
-  // Fungsi untuk mengisi notepad dengan data yang diterima
-  void assignNotepad() {
-    notepad = {
-      'title': '',
-      'content': '',
-    };
-
-    print('notepad $notepad');
-
-    if (notepad != null) {
-      titleController.text = notepad!['title'] ?? '';
-      contentController.text =
-          notepad!['content'] ?? ''; 
-      originalTitle = titleController.text;
-      originalContent = contentController.text;
-    }
+  // Fungsi untuk mengedit catatan
+  void _editNotepad() {
+    storage.read(key: 'currentUsername').then((currentUsername) {
+      if (currentUsername != null) {
+        storage.read(key: 'notepads_$currentUsername').then((storedNotepads) {
+          List<Map<String, dynamic>> notepads = [];
+          if (storedNotepads != null) notepads = List<Map<String, dynamic>>.from(jsonDecode(storedNotepads));
+          if (notepad != null) {
+            final int indexEdit = Get.arguments['index_edit'] = Get.arguments['index_edit'] as int;
+            notepads[indexEdit] = notepad!;
+            storage.write(key: 'notepads_$currentUsername', value: jsonEncode(notepads));
+            Get.back(result: true);
+          }
+        });
+      }
+    });
   }
 
   // Fungsi untuk menyimpan catatan baru atau perubahan catatan
-  void saveNotepad() {
-    if (notepad != null) {
-      // Memperbarui judul dan konten notepad dengan input dari pengguna
-      notepad!['title'] = titleController.text;
-      notepad!['content'] = contentController.text;
-
-      // Kembalikan notepad yang sudah disimpan ke halaman home
-      Get.back(result: notepad);
+  void saveNotepad() async {
+    if (titleController.text == '' || contentController.text == '') {
+      Get.snackbar(
+        'Gagal',
+        'Judul dan konten tidak boleh kosong',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+      return;
     }
+    notepad = {
+      'title': titleController.text,
+      'content': contentController.text,
+    };
+    print('notepad: $notepad');
+    Get.arguments['action'] == 'edit' ? _editNotepad() : _addNotepad(notepad);
   }
 
   // Fungsi untuk memeriksa apakah ada perubahan sebelum kembali
   Future<bool> onBackPressed() async {
     // Jika ada perubahan pada judul atau konten
-    if (titleController.text != originalTitle ||
-        contentController.text != originalContent) {
+    if (titleController.text != '' || contentController.text != '') {
       bool shouldLeave = await _showExitWithoutSavingDialog();
-      return shouldLeave; 
+      return shouldLeave;
     }
     return true;
   }
@@ -73,8 +93,7 @@ class NotepadDetailController extends GetxController {
     return await Get.dialog(
           AlertDialog(
             title: Text('Perubahan belum disimpan'),
-            content: Text(
-                'Apakah Anda yakin ingin kembali tanpa menyimpan perubahan?'),
+            content: Text('Apakah Anda yakin ingin kembali tanpa menyimpan perubahan?'),
             actions: [
               TextButton(
                 onPressed: () {

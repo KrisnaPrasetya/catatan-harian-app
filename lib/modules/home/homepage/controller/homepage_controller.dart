@@ -1,11 +1,13 @@
-import 'package:daily_notes_app/core/routes/app_routes.dart';
-import 'package:get/get.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:convert';
 
+import 'package:daily_notes_app/core/routes/app_routes.dart';
+import 'package:daily_notes_app/core/services/local_storage_service.dart';
+import 'package:daily_notes_app/modules/home/notepad_detail/controller/notepad_detail_controller.dart';
+import 'package:get/get.dart';
+
 class HomePageController extends GetxController {
-  var notepads = <Map<String, dynamic>>[].obs;
-  final storage = const FlutterSecureStorage();
+  RxList<Map<String, dynamic>> notepads = <Map<String, dynamic>>[].obs;
+  final LocalStorageService storage = LocalStorageService();
   String? currentUsername;
 
   @override
@@ -16,48 +18,53 @@ class HomePageController extends GetxController {
 
   // Fungsi untuk memuat catatan dari secure storage berdasarkan username
   Future<void> loadNotepads() async {
-    if (currentUsername != null) {
-      final storedNotepads =
-          await storage.read(key: 'notepads_$currentUsername');
-      if (storedNotepads != null) {
-        notepads.value =
-            List<Map<String, dynamic>>.from(jsonDecode(storedNotepads));
-      }
+    if (currentUsername == null) {
+      Get.offAllNamed(AppRoutes.login);
+      return;
+    }
+    final storedNotepads = await storage.read(key: 'notepads_$currentUsername');
+    if (storedNotepads != null) {
+      notepads.value = List<Map<String, dynamic>>.from(jsonDecode(storedNotepads));
+      notepads.refresh();
+      update();
     }
   }
 
   // Fungsi untuk menyimpan catatan ke secure storage
   Future<void> saveNotepads() async {
     if (currentUsername != null) {
-      await storage.write(
-          key: 'notepads_$currentUsername', value: jsonEncode(notepads));
+      await storage.write(key: 'notepads_$currentUsername', value: jsonEncode(notepads));
     }
   }
 
   // Fungsi untuk menambahkan notepad baru
-  void addNewNotepad() async {
-    final result = await Get.toNamed(AppRoutes.detailnote);
-
-    // Jika hasil edit ada, tambahkan notepad baru
-    if (result != null) {
-      notepads.add(result);
-      saveNotepads(); 
-      notepads.refresh(); 
+  Future<void> addNewNotepad() async {
+    // check username
+    if (currentUsername == null) {
+      Get.snackbar('Error', 'Username tidak ditemukan, silahkan login kembali');
+      Get.offAllNamed(AppRoutes.login);
+      return;
     }
+    Get.find<NotepadDetailController>().assignTextController(content: '', title: '');
+    final result = await Get.toNamed(AppRoutes.detailNote, arguments: {'action': 'add', 'index_edit': -1});
+    // Jika hasil edit ada, tambahkan notepad baru
+    if (result != null) loadNotepads();
   }
 
   // Fungsi untuk mengedit notepad
   void editNotepad(Map<String, dynamic> notepad) async {
-    final result = await Get.toNamed(AppRoutes.detailnote, arguments: notepad);
-
-    if (result != null) {
-      int index = notepads.indexWhere((element) => element == notepad);
-      if (index != -1) {
-        notepads[index] = result;
-        saveNotepads();
-        notepads.refresh();
-      }
-    }
+    notepad.forEach((key, value) {});
+    Get.find<NotepadDetailController>().assignTextController(
+      title: notepad['title'],
+      content: notepad['content'],
+    );
+    final result = await Get.toNamed(AppRoutes.detailNote, arguments: {
+      'action': 'edit',
+      'index_edit': notepads.indexWhere((element) => element == notepad),
+    });
+    print('result: $result');
+    // Jika hasil edit ada, perbarui notepad
+    if (result != null) loadNotepads();
   }
 
   // Fungsi untuk menghapus notepad

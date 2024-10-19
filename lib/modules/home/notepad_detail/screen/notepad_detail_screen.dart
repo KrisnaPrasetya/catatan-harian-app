@@ -41,6 +41,7 @@ class NotepadDetailScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      onChanged: (value) => controller.update,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight:
@@ -54,6 +55,7 @@ class NotepadDetailScreen extends StatelessWidget {
                         controller: controller.contentController,
                         maxLines: null,
                         keyboardType: TextInputType.multiline,
+                        onChanged: (value) => controller.update,
                         decoration: InputDecoration(
                           hintText: 'Konten Catatan',
                           border: InputBorder.none,

@@ -6,9 +6,9 @@ import 'package:get/get.dart';
 
 class BaseController {
   static initialize() {
-    Get.put(LoginController(), permanent: true);
-    Get.put(RegisterController(), permanent: true);
-    Get.put(HomePageController(), permanent: true);
-    Get.put(NotepadDetailController(), permanent: true);
+    Get.put(LoginController());
+    Get.put(RegisterController());
+    Get.put(HomePageController());
+    Get.put(NotepadDetailController());
   }
 }

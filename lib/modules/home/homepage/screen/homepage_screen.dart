@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 
 import '../controller/homepage_controller.dart';
@@ -15,7 +16,12 @@ class HomePageScreen extends StatelessWidget {
             appBar: AppBar(
               scrolledUnderElevation: 0,
               automaticallyImplyLeading: false,
-              title: Text('Catatan Saya'),
+              title: GestureDetector(
+                onTap: () {
+                  print('--------------');
+                  print(controller.notepads);
+                },
+                  child: Text('Catatan Saya')),
               titleTextStyle: TextStyle(
                 color: Colors.white,
                 fontSize: 20,

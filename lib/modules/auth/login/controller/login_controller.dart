@@ -1,12 +1,12 @@
 import 'package:daily_notes_app/core/routes/app_routes.dart';
+import 'package:daily_notes_app/core/services/local_storage_service.dart';
 import 'package:daily_notes_app/modules/home/homepage/controller/homepage_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:convert';
 
 class LoginController extends GetxController {
-  final FlutterSecureStorage storage = FlutterSecureStorage();
+  final LocalStorageService storage = LocalStorageService();
   final Rx<bool> isLoggedIn = false.obs, isPasswordHidden = true.obs;
   String? currentUsername;
   final TextEditingController usernameController = TextEditingController(),
