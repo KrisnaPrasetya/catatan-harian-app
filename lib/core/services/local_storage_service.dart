@@ -4,7 +4,7 @@ class LocalStorageService {
   static final _storage = FlutterSecureStorage();
 
   static Future<void> init() async {
-    // Logika inisialisasi jika diperlukan
+    
   }
 
   static Future<void> saveData(String key, String value) async {
@@ -18,4 +18,9 @@ class LocalStorageService {
   static Future<void> deleteData(String key) async {
     await _storage.delete(key: key);
   }
+  
+static Future<void> addList(String key, List<String> values) async {
+  await _storage.write(key: key, value: values.join(','));
+}
+
 }

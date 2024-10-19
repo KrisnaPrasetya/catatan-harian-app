@@ -57,7 +57,7 @@ class LoginController extends GetxController {
       // Atur username di HomePresenter sebelum mengarahkan ke halaman home
       final HomePageController homePresenter = Get.put(HomePageController());
       homePresenter.currentUsername = username;
-      await homePresenter.loadNotepads(); // Memuat catatan saat login berhasil
+      await homePresenter.loadNotepads();
 
       Get.offAllNamed('/home');
     } else {

@@ -11,7 +11,7 @@ class HomePageController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    loadNotepads(); // Memuat catatan ketika presenter diinisialisasi
+    loadNotepads();
   }
 
   // Fungsi untuk memuat catatan dari secure storage berdasarkan username
@@ -54,7 +54,7 @@ class HomePageController extends GetxController {
       int index = notepads.indexWhere((element) => element == notepad);
       if (index != -1) {
         notepads[index] = result;
-        saveNotepads(); // Simpan ke storage
+        saveNotepads();
         notepads.refresh();
       }
     }
@@ -63,8 +63,8 @@ class HomePageController extends GetxController {
   // Fungsi untuk menghapus notepad
   void deleteNotepad(Map<String, dynamic> notepad) {
     notepads.remove(notepad);
-    saveNotepads(); // Simpan ke storage
-    notepads.refresh(); // Refresh UI untuk memperbarui daftar
+    saveNotepads();
+    notepads.refresh();
   }
 
   // Fungsi untuk logout

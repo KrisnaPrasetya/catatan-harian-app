@@ -44,7 +44,7 @@ class NotepadDetailScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight:
-                            FontWeight.bold, // Mengatur gaya teks yang diketik
+                            FontWeight.bold,
                       ),
                     ),
                     SizedBox(height: 20),

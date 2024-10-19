@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class NotepadDetailController extends GetxController {
   final TextEditingController titleController = TextEditingController(),
-      contentController = TextEditingController(); // Untuk konten catatan
+      contentController = TextEditingController();
   Map<String, dynamic>? notepad;
 
   String? originalTitle, originalContent;
@@ -65,7 +65,7 @@ class NotepadDetailController extends GetxController {
       bool shouldLeave = await _showExitWithoutSavingDialog();
       return shouldLeave; 
     }
-    return true; // Tidak ada perubahan, lanjutkan kembali tanpa dialog
+    return true;
   }
 
   // Menampilkan dialog untuk mengonfirmasi apakah pengguna ingin keluar tanpa menyimpan
@@ -78,19 +78,19 @@ class NotepadDetailController extends GetxController {
             actions: [
               TextButton(
                 onPressed: () {
-                  Get.back(result: false); // Batal, jangan kembali
+                  Get.back(result: false);
                 },
                 child: Text('Tidak'),
               ),
               TextButton(
                 onPressed: () {
-                  Get.back(result: true); // Lanjutkan keluar
+                  Get.back(result: true);
                 },
                 child: Text('Ya'),
               ),
             ],
           ),
         ) ??
-        false; // Default false jika dialog ditutup tanpa pilihan
+        false;
   }
 }

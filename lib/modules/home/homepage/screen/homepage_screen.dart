@@ -59,7 +59,7 @@ class HomePageScreen extends StatelessWidget {
                                   child: IconButton(
                                     icon: Icon(Icons.edit),
                                     onPressed: () => controller.editNotepad(
-                                        notepad), // Panggil fungsi editNotepad
+                                        notepad),
                                     tooltip: 'Edit',
                                   ),
                                 ),
@@ -72,7 +72,7 @@ class HomePageScreen extends StatelessWidget {
                                   child: IconButton(
                                     icon: Icon(Icons.delete),
                                     onPressed: () => controller.deleteNotepad(
-                                        notepad), // Panggil fungsi deleteNotepad
+                                        notepad),
                                     tooltip: 'Delete',
                                   ),
                                 ),

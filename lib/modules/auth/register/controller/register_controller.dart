@@ -12,7 +12,6 @@ class RegisterController extends GetxController {
 
   @override
   void onInit() {
-    // Membersihkan form ketika controller pertama kali diinisialisasi
     super.onInit();
   }
 
