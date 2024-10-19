@@ -1,3 +1,4 @@
+import 'package:daily_notes_app/core/routes/app_routes.dart';
 import 'package:get/get.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:convert';
@@ -35,24 +36,19 @@ class HomePageController extends GetxController {
 
   // Fungsi untuk menambahkan notepad baru
   void addNewNotepad() async {
-    Map<String, dynamic> newNotepad = {
-      'title': '',
-      'content': ''
-    }; // Notepad kosong
-
-    final result = await Get.toNamed('/notepad_detail', arguments: newNotepad);
+    final result = await Get.toNamed(AppRoutes.detailnote);
 
     // Jika hasil edit ada, tambahkan notepad baru
     if (result != null) {
       notepads.add(result);
-      saveNotepads(); // Simpan ke storage
-      notepads.refresh(); // Refresh UI untuk memperbarui daftar
+      saveNotepads(); 
+      notepads.refresh(); 
     }
   }
 
   // Fungsi untuk mengedit notepad
   void editNotepad(Map<String, dynamic> notepad) async {
-    final result = await Get.toNamed('/notepad_detail', arguments: notepad);
+    final result = await Get.toNamed(AppRoutes.detailnote, arguments: notepad);
 
     if (result != null) {
       int index = notepads.indexWhere((element) => element == notepad);
@@ -62,6 +58,13 @@ class HomePageController extends GetxController {
         notepads.refresh();
       }
     }
+  }
+
+  // Fungsi untuk menghapus notepad
+  void deleteNotepad(Map<String, dynamic> notepad) {
+    notepads.remove(notepad);
+    saveNotepads(); // Simpan ke storage
+    notepads.refresh(); // Refresh UI untuk memperbarui daftar
   }
 
   // Fungsi untuk logout

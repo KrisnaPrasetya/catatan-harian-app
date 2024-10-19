@@ -13,12 +13,21 @@ class HomePageScreen extends StatelessWidget {
         builder: (controller) {
           return Scaffold(
             appBar: AppBar(
-              title: Text('Home'),
+              scrolledUnderElevation: 0,
+              automaticallyImplyLeading: false,
+              title: Text('Catatan Saya'),
+              titleTextStyle: TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+              backgroundColor: Colors.grey[400],
               actions: [
                 IconButton(
                   icon: Icon(Icons.logout),
-                  onPressed: controller.logout, // Panggil fungsi logout
+                  onPressed: controller.logout,
                   tooltip: 'Logout',
+                  color: Colors.white,
                 ),
               ],
             ),
@@ -37,18 +46,37 @@ class HomePageScreen extends StatelessWidget {
                           child: ListTile(
                             title: Text(
                               "Title: ${notepad['title']}",
-                              overflow: TextOverflow
-                                  .ellipsis, // Menampilkan judul dengan ellipsis jika terlalu panjang
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            trailing: ElevatedButton.icon(
-                              onPressed: () {
-                                controller.editNotepad(notepad);
-                              },
-                              icon: Icon(Icons.edit),
-                              label: Text('Edit'),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.orange,
-                              ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.green,
+                                      borderRadius:
+                                          BorderRadius.circular(12.0)),
+                                  child: IconButton(
+                                    icon: Icon(Icons.edit),
+                                    onPressed: () => controller.editNotepad(
+                                        notepad), // Panggil fungsi editNotepad
+                                    tooltip: 'Edit',
+                                  ),
+                                ),
+                                const SizedBox(width: 8.0),
+                                Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.red,
+                                      borderRadius:
+                                          BorderRadius.circular(12.0)),
+                                  child: IconButton(
+                                    icon: Icon(Icons.delete),
+                                    onPressed: () => controller.deleteNotepad(
+                                        notepad), // Panggil fungsi deleteNotepad
+                                    tooltip: 'Delete',
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         );

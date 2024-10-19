@@ -10,6 +10,19 @@ class RegisterController extends GetxController {
   final TextEditingController usernameController = TextEditingController(),
       passwordController = TextEditingController();
 
+  @override
+  void onInit() {
+    // Membersihkan form ketika controller pertama kali diinisialisasi
+    super.onInit();
+  }
+
+  @override
+  void onClose() {
+    usernameController.dispose();
+    passwordController.dispose();
+    super.onClose();
+  }
+
   // Fungsi Register
   void register() async {
     try {

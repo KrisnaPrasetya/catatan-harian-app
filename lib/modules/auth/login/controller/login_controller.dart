@@ -18,6 +18,13 @@ class LoginController extends GetxController {
     checkLoginStatus();
   }
 
+@override
+  void onClose() {
+    usernameController.dispose();
+    passwordController.dispose();
+    super.onClose();
+  }
+
   Future<void> checkLoginStatus() async {
     final storedValue = await storage.read(key: 'isLoggedIn');
     if (storedValue == 'true') {

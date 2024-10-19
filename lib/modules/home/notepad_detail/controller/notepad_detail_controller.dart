@@ -11,7 +11,13 @@ class NotepadDetailController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    assignNotepad();
+    assignNotepad(); 
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+    assignNotepad(); 
   }
 
   @override
@@ -21,15 +27,19 @@ class NotepadDetailController extends GetxController {
     super.onClose();
   }
 
+  // Fungsi untuk mengisi notepad dengan data yang diterima
   void assignNotepad() {
-    // Mengambil data notepad yang dikirim dari halaman sebelumnya
-    notepad = Get.arguments;
+    notepad = {
+      'title': '',
+      'content': '',
+    };
+
+    print('notepad $notepad');
 
     if (notepad != null) {
-      print('masuk');
       titleController.text = notepad!['title'] ?? '';
       contentController.text =
-          notepad!['content'] ?? ''; // Ambil konten catatan jika ada
+          notepad!['content'] ?? ''; 
       originalTitle = titleController.text;
       originalContent = contentController.text;
     }
@@ -53,7 +63,7 @@ class NotepadDetailController extends GetxController {
     if (titleController.text != originalTitle ||
         contentController.text != originalContent) {
       bool shouldLeave = await _showExitWithoutSavingDialog();
-      return shouldLeave; // Hanya kembali jika pengguna mengonfirmasi untuk meninggalkan halaman tanpa menyimpan
+      return shouldLeave; 
     }
     return true; // Tidak ada perubahan, lanjutkan kembali tanpa dialog
   }

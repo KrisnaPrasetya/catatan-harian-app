@@ -24,7 +24,19 @@ class NotepadDetailScreen extends StatelessWidget {
                     // Input untuk judul catatan
                     TextField(
                       controller: controller.titleController,
-                      decoration: InputDecoration(labelText: 'Judul Catatan'),
+                      decoration: InputDecoration(
+                        hintText: 'Judul Catatan',
+                        border: InputBorder.none,
+                        hintStyle: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight:
+                            FontWeight.bold, // Mengatur gaya teks yang diketik
+                      ),
                     ),
                     SizedBox(height: 20),
                     // Input untuk konten catatan
@@ -33,8 +45,10 @@ class NotepadDetailScreen extends StatelessWidget {
                         controller: controller.contentController,
                         maxLines: null,
                         keyboardType: TextInputType.multiline,
-                        decoration:
-                            InputDecoration(labelText: 'Konten Catatan'),
+                        decoration: InputDecoration(
+                          hintText: 'Konten Catatan',
+                          border: InputBorder.none,
+                        ),
                       ),
                     ),
                   ],
@@ -42,8 +56,7 @@ class NotepadDetailScreen extends StatelessWidget {
               ),
               // Tombol Simpan yang mengambang di kanan bawah
               floatingActionButton: FloatingActionButton(
-                onPressed: controller
-                    .saveNotepad, // Memanggil fungsi saveNotepad untuk menyimpan catatan
+                onPressed: controller.saveNotepad,
                 tooltip: 'Simpan Catatan',
                 child: Icon(Icons.save),
               ),
