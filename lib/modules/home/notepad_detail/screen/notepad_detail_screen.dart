@@ -15,7 +15,16 @@ class NotepadDetailScreen extends StatelessWidget {
             onWillPop: controller.onBackPressed,
             child: Scaffold(
               appBar: AppBar(
-                title: Text('Tambah/Edit Catatan'),
+                scrolledUnderElevation: 0,
+                title: Text('Catatan'),
+                titleTextStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+                backgroundColor: Colors.grey[400],
+                centerTitle: true,
+                iconTheme: IconThemeData(color: Colors.white),
               ),
               body: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -56,9 +65,13 @@ class NotepadDetailScreen extends StatelessWidget {
               ),
               // Tombol Simpan yang mengambang di kanan bawah
               floatingActionButton: FloatingActionButton(
+                backgroundColor: Colors.amber[600],
                 onPressed: controller.saveNotepad,
                 tooltip: 'Simpan Catatan',
-                child: Icon(Icons.save),
+                child: Icon(
+                  Icons.save,
+                  color: Colors.white,
+                ),
               ),
             ),
           );

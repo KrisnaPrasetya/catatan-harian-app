@@ -87,9 +87,13 @@ class HomePageScreen extends StatelessWidget {
               ),
             ),
             floatingActionButton: FloatingActionButton(
+              backgroundColor: Colors.amber[600],
               onPressed: controller.addNewNotepad,
               tooltip: 'Tambah Catatan Baru',
-              child: Icon(Icons.add),
+              child: Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
             ),
           );
         });
