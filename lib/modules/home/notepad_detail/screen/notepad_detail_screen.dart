@@ -11,7 +11,6 @@ class NotepadDetailScreen extends StatelessWidget {
         init: NotepadDetailController(),
         builder: (controller) {
           return WillPopScope(
-            // Untuk menangani event ketika pengguna menekan tombol back
             onWillPop: controller.onBackPressed,
             child: Scaffold(
               appBar: AppBar(
@@ -30,7 +29,6 @@ class NotepadDetailScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
-                    // Input untuk judul catatan
                     TextField(
                       controller: controller.titleController,
                       decoration: InputDecoration(
@@ -49,7 +47,6 @@ class NotepadDetailScreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 20),
-                    // Input untuk konten catatan
                     Expanded(
                       child: TextField(
                         controller: controller.contentController,
@@ -65,7 +62,6 @@ class NotepadDetailScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              // Tombol Simpan yang mengambang di kanan bawah
               floatingActionButton: FloatingActionButton(
                 backgroundColor: Colors.amber[600],
                 onPressed: controller.saveNotepad,

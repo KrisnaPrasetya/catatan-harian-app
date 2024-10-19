@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class NotepadDetailController extends GetxController {
-  final TextEditingController titleController = TextEditingController(), contentController = TextEditingController();
+  final TextEditingController titleController = TextEditingController(),
+      contentController = TextEditingController();
   Map<String, dynamic>? notepad;
   final LocalStorageService storage = LocalStorageService();
 
@@ -19,12 +20,14 @@ class NotepadDetailController extends GetxController {
   // Fungsi untuk menambahkan catatan baru
   void _addNotepad(Map<String, dynamic>? notepad) {
     storage.read(key: 'currentUsername').then((currentUsername) {
-      print('currentUsername: $currentUsername');
+      // print('currentUsername: $currentUsername');
       if (currentUsername != null) {
-        print('notepads_$currentUsername');
+        // print('notepads_$currentUsername');
         storage.read(key: 'notepads_$currentUsername').then((storedNotepads) {
           List<Map<String, dynamic>> notepads = [];
-          if (storedNotepads != null) notepads = List<Map<String, dynamic>>.from(jsonDecode(storedNotepads));
+          if (storedNotepads != null)
+            notepads =
+                List<Map<String, dynamic>>.from(jsonDecode(storedNotepads));
           if (notepad != null) {
             int index = notepads.indexWhere((element) => element == notepad);
             if (index != -1) {
@@ -32,7 +35,8 @@ class NotepadDetailController extends GetxController {
             } else {
               notepads.add(notepad);
             }
-            storage.write(key: 'notepads_$currentUsername', value: jsonEncode(notepads));
+            storage.write(
+                key: 'notepads_$currentUsername', value: jsonEncode(notepads));
             Get.back(result: true);
           }
         });
@@ -46,11 +50,15 @@ class NotepadDetailController extends GetxController {
       if (currentUsername != null) {
         storage.read(key: 'notepads_$currentUsername').then((storedNotepads) {
           List<Map<String, dynamic>> notepads = [];
-          if (storedNotepads != null) notepads = List<Map<String, dynamic>>.from(jsonDecode(storedNotepads));
+          if (storedNotepads != null)
+            notepads =
+                List<Map<String, dynamic>>.from(jsonDecode(storedNotepads));
           if (notepad != null) {
-            final int indexEdit = Get.arguments['index_edit'] = Get.arguments['index_edit'] as int;
+            final int indexEdit = Get.arguments['index_edit'] =
+                Get.arguments['index_edit'] as int;
             notepads[indexEdit] = notepad!;
-            storage.write(key: 'notepads_$currentUsername', value: jsonEncode(notepads));
+            storage.write(
+                key: 'notepads_$currentUsername', value: jsonEncode(notepads));
             Get.back(result: true);
           }
         });
@@ -62,10 +70,10 @@ class NotepadDetailController extends GetxController {
   void saveNotepad() async {
     if (titleController.text == '' || contentController.text == '') {
       Get.snackbar(
-        'Gagal',
+        'Gagal Menyimpan',
         'Judul dan konten tidak boleh kosong',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.red[400],
         colorText: Colors.white,
       );
       return;
@@ -93,7 +101,8 @@ class NotepadDetailController extends GetxController {
     return await Get.dialog(
           AlertDialog(
             title: Text('Perubahan belum disimpan'),
-            content: Text('Apakah Anda yakin ingin kembali tanpa menyimpan perubahan?'),
+            content: Text(
+                'Apakah Anda yakin ingin kembali tanpa menyimpan perubahan?'),
             actions: [
               TextButton(
                 onPressed: () {

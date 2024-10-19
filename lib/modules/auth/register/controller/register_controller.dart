@@ -47,12 +47,14 @@ class RegisterController extends GetxController {
       await storage.write(key: 'users', value: json.encode(users));
 
       Get.snackbar('Sukses', 'Registrasi berhasil');
+      
       Get.offAllNamed(AppRoutes.login);
     } catch (e) {
       Get.snackbar('Error', 'Registrasi gagal');
     }
   }
 
+  // Fungsi untuk menampilkan atau menyembunyikan password
   void togglePasswordVisibility() {
     isPasswordHidden.value = !isPasswordHidden.value;
   }

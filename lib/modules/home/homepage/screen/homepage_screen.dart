@@ -17,10 +17,10 @@ class HomePageScreen extends StatelessWidget {
               scrolledUnderElevation: 0,
               automaticallyImplyLeading: false,
               title: GestureDetector(
-                onTap: () {
-                  print('--------------');
-                  print(controller.notepads);
-                },
+                  onTap: () {
+                    // print('--------------');
+                    // print(controller.notepads);
+                  },
                   child: Text('Catatan Saya')),
               titleTextStyle: TextStyle(
                 color: Colors.white,
@@ -63,9 +63,12 @@ class HomePageScreen extends StatelessWidget {
                                       borderRadius:
                                           BorderRadius.circular(12.0)),
                                   child: IconButton(
-                                    icon: Icon(Icons.edit),
-                                    onPressed: () => controller.editNotepad(
-                                        notepad),
+                                    icon: Icon(
+                                      Icons.edit,
+                                      color: Colors.white,
+                                    ),
+                                    onPressed: () =>
+                                        controller.editNotepad(notepad),
                                     tooltip: 'Edit',
                                   ),
                                 ),
@@ -76,9 +79,10 @@ class HomePageScreen extends StatelessWidget {
                                       borderRadius:
                                           BorderRadius.circular(12.0)),
                                   child: IconButton(
-                                    icon: Icon(Icons.delete),
-                                    onPressed: () => controller.deleteNotepad(
-                                        notepad),
+                                    icon:
+                                        Icon(Icons.delete, color: Colors.white),
+                                    onPressed: () =>
+                                        controller.deleteNotepad(notepad),
                                     tooltip: 'Delete',
                                   ),
                                 ),

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:daily_notes_app/core/routes/app_routes.dart';
 import 'package:daily_notes_app/core/services/local_storage_service.dart';
 import 'package:daily_notes_app/modules/home/notepad_detail/controller/notepad_detail_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class HomePageController extends GetxController {
@@ -24,7 +25,8 @@ class HomePageController extends GetxController {
     }
     final storedNotepads = await storage.read(key: 'notepads_$currentUsername');
     if (storedNotepads != null) {
-      notepads.value = List<Map<String, dynamic>>.from(jsonDecode(storedNotepads));
+      notepads.value =
+          List<Map<String, dynamic>>.from(jsonDecode(storedNotepads));
       notepads.refresh();
       update();
     }
@@ -33,7 +35,8 @@ class HomePageController extends GetxController {
   // Fungsi untuk menyimpan catatan ke secure storage
   Future<void> saveNotepads() async {
     if (currentUsername != null) {
-      await storage.write(key: 'notepads_$currentUsername', value: jsonEncode(notepads));
+      await storage.write(
+          key: 'notepads_$currentUsername', value: jsonEncode(notepads));
     }
   }
 
@@ -45,8 +48,10 @@ class HomePageController extends GetxController {
       Get.offAllNamed(AppRoutes.login);
       return;
     }
-    Get.find<NotepadDetailController>().assignTextController(content: '', title: '');
-    final result = await Get.toNamed(AppRoutes.detailNote, arguments: {'action': 'add', 'index_edit': -1});
+    Get.find<NotepadDetailController>()
+        .assignTextController(content: '', title: '');
+    final result = await Get.toNamed(AppRoutes.detailNote,
+        arguments: {'action': 'add', 'index_edit': -1});
     // Jika hasil edit ada, tambahkan notepad baru
     if (result != null) loadNotepads();
   }
@@ -62,16 +67,27 @@ class HomePageController extends GetxController {
       'action': 'edit',
       'index_edit': notepads.indexWhere((element) => element == notepad),
     });
-    print('result: $result');
+    // print('result: $result');
     // Jika hasil edit ada, perbarui notepad
     if (result != null) loadNotepads();
   }
 
-  // Fungsi untuk menghapus notepad
   void deleteNotepad(Map<String, dynamic> notepad) {
-    notepads.remove(notepad);
-    saveNotepads();
-    notepads.refresh();
+    Get.defaultDialog(
+      title: 'Konfirmasi',
+      middleText: 'Apakah Anda yakin ingin\nmenghapus notepad ini?',
+      textCancel: 'Batal',
+      textConfirm: 'Hapus',
+      backgroundColor: Colors.grey[200],
+      cancelTextColor: Colors.red,
+      confirmTextColor: Colors.white,
+      onConfirm: () {
+        notepads.remove(notepad);
+        saveNotepads();
+        notepads.refresh();
+        Get.back();
+      },
+    );
   }
 
   // Fungsi untuk logout

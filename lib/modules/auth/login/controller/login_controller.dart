@@ -25,6 +25,7 @@ class LoginController extends GetxController {
     super.onClose();
   }
 
+  // Fungsi untuk memeriksa status login
   Future<void> checkLoginStatus() async {
     final storedValue = await storage.read(key: 'isLoggedIn');
     if (storedValue == 'true') {
@@ -34,6 +35,7 @@ class LoginController extends GetxController {
     }
   }
 
+  // Fungsi Login
   void login() async {
     final String username = usernameController.text,
         password = passwordController.text,
@@ -51,7 +53,7 @@ class LoginController extends GetxController {
       await storage.write(key: 'isLoggedIn', value: 'true');
       await storage.write(
           key: 'currentUsername',
-          value: username); // Simpan username ke storage
+          value: username);
       isLoggedIn.value = true;
 
       // Atur username di HomePresenter sebelum mengarahkan ke halaman home
@@ -65,10 +67,12 @@ class LoginController extends GetxController {
     }
   }
 
+  // Fungsi untuk menampilkan atau menyembunyikan password
   void togglePasswordVisibility() {
     isPasswordHidden.value = !isPasswordHidden.value;
   }
 
+  // Fungsi untuk pindah ke halaman register
   void toRegister() {
     Get.toNamed(AppRoutes.register);
   }
