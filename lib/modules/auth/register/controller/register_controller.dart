@@ -44,11 +44,6 @@ class RegisterController extends GetxController {
           usersJson = await storage.read(key: 'users') ?? '[]';
       final users = json.decode(usersJson) as List;
 
-      //Memerikasa apakah username atau password kosong
-      if (username.isEmpty || password.isEmpty) {
-        Get.snackbar('Error', 'Masukkan Username dan Password');
-        return;
-      }
 
       // Memeriksa apakah username sudah digunakan
       if (users.any((u) => u['username'] == username)) {

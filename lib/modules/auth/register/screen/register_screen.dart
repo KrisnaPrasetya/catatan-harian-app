@@ -7,6 +7,8 @@ class RegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _formKey = GlobalKey<FormState>();
+
     return GetBuilder<RegisterController>(
         init: RegisterController(),
         builder: (controller) {
@@ -28,23 +30,32 @@ class RegisterScreen extends StatelessWidget {
             ),
             body: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextField(
-                    controller: controller.usernameController,
-                    decoration: InputDecoration(
-                      labelText: 'Username',
-                      hintText: 'Username',
-                      prefixIcon: const Icon(Icons.person),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(color: Colors.grey),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextFormField(
+                      controller: controller.usernameController,
+                      decoration: InputDecoration(
+                        labelText: 'Username',
+                        hintText: 'Username',
+                        prefixIcon: const Icon(Icons.person),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(color: Colors.grey),
+                        ),
                       ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Masukkan username anda';
+                        }
+                        return null;
+                      },
                     ),
-                  ),
-                  SizedBox(height: 16),
-                  Obx(() => TextField(
+                    SizedBox(height: 16),
+                    Obx(
+                      () => TextFormField(
                         controller: controller.passwordController,
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.lock),
@@ -62,28 +73,42 @@ class RegisterScreen extends StatelessWidget {
                             onPressed: controller.togglePasswordVisibility,
                           ),
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Masukkan password anda';
+                          } else if (value.length < 6) {
+                            return 'Password minimal 6 karakter!';
+                          }
+                          return null;
+                        },
                         obscureText: controller.isPasswordHidden.value,
-                      )),
-                  SizedBox(height: 20),
-                  SizedBox(
-                    width: Get.width,
-                    child: ElevatedButton(
-                      onPressed: controller.register,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.orange[600],
-                        padding: EdgeInsets.all(16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      child: Text(
-                        'Register',
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
                       ),
                     ),
-                  ),
-                ],
+                    SizedBox(height: 20),
+                    SizedBox(
+                      width: Get.width,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            controller.register();
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.orange[600],
+                          padding: EdgeInsets.all(16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: Text(
+                          'Register',
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           );
