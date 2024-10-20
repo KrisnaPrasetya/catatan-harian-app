@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 
 import '../controller/homepage_controller.dart';
@@ -59,7 +58,7 @@ class HomePageScreen extends StatelessWidget {
                               children: [
                                 Container(
                                   decoration: BoxDecoration(
-                                      color: Colors.green,
+                                      color: Colors.amber[600],
                                       borderRadius:
                                           BorderRadius.circular(12.0)),
                                   child: IconButton(

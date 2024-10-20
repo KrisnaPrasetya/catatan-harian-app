@@ -99,24 +99,55 @@ class NotepadDetailController extends GetxController {
   // Menampilkan dialog untuk mengonfirmasi apakah pengguna ingin keluar tanpa menyimpan
   Future<bool> _showExitWithoutSavingDialog() async {
     return await Get.dialog(
-          AlertDialog(
-            title: Text('Perubahan belum disimpan'),
-            content: Text(
-                'Apakah Anda yakin ingin kembali tanpa menyimpan perubahan?'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Get.back(result: false);
-                },
-                child: Text('Tidak'),
+          Dialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            child: Container(
+              padding: EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.warning_amber_rounded,
+                      size: 48, color: Colors.red),
+                  SizedBox(height: 16),
+                  Text(
+                    'Perubahan belum disimpan',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'Apakah Anda yakin ingin kembali tanpa menyimpan perubahan?',
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 24),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SizedBox(
+                        width: Get.width * 0.3,
+                        child: ElevatedButton(
+                          onPressed: () => Get.back(result: false),
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.grey),
+                          child: Text('Tidak',
+                              style: TextStyle(color: Colors.white)),
+                        ),
+                      ),
+                      SizedBox(
+                        width: Get.width * 0.3,
+                        child: ElevatedButton(
+                          onPressed: () => Get.back(result: true),
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red),
+                          child:
+                              Text('Ya', style: TextStyle(color: Colors.white)),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              TextButton(
-                onPressed: () {
-                  Get.back(result: true);
-                },
-                child: Text('Ya'),
-              ),
-            ],
+            ),
           ),
         ) ??
         false;

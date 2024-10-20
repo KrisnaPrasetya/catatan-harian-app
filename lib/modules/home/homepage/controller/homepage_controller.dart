@@ -20,6 +20,7 @@ class HomePageController extends GetxController {
   // Fungsi untuk memuat catatan dari secure storage berdasarkan username
   Future<void> loadNotepads() async {
     if (currentUsername == null) {
+      await Future.delayed(Duration(seconds: 1));
       Get.offAllNamed(AppRoutes.login);
       return;
     }
@@ -73,20 +74,65 @@ class HomePageController extends GetxController {
   }
 
   void deleteNotepad(Map<String, dynamic> notepad) {
-    Get.defaultDialog(
-      title: 'Konfirmasi',
-      middleText: 'Apakah Anda yakin ingin\nmenghapus notepad ini?',
-      textCancel: 'Batal',
-      textConfirm: 'Hapus',
-      backgroundColor: Colors.grey[200],
-      cancelTextColor: Colors.red,
-      confirmTextColor: Colors.white,
-      onConfirm: () {
-        notepads.remove(notepad);
-        saveNotepads();
-        notepads.refresh();
-        Get.back();
-      },
+    Get.dialog(
+      Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        child: Container(
+          width: Get.width > 450 ? 450 : Get.width * 0.9,
+          padding: EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.delete_forever, size: 48, color: Colors.red),
+              SizedBox(height: 16),
+              Text(
+                'Hapus notepad',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 16),
+              Text(
+                'Apakah Anda yakin ingin menghapus notepad ini?',
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 24),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () => Get.back(),
+                      child: Text('Batal'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.grey[300],
+                        foregroundColor: Colors.black,
+                        padding: EdgeInsets.symmetric(vertical: 12),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 16),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        notepads.remove(notepad);
+                        saveNotepads();
+                        notepads.refresh();
+                        Get.back();
+                      },
+                      child: Text('Hapus'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        foregroundColor: Colors.white,
+                        padding: EdgeInsets.symmetric(vertical: 12),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+      barrierDismissible: false,
     );
   }
 
