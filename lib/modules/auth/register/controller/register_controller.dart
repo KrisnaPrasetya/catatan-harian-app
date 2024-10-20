@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:convert';
 
+import '../../login/controller/login_controller.dart';
+
 class RegisterController extends GetxController {
   final FlutterSecureStorage storage = const FlutterSecureStorage();
   final Rx<bool> isPasswordHidden = true.obs;
@@ -17,9 +19,21 @@ class RegisterController extends GetxController {
 
   @override
   void onClose() {
-    usernameController.dispose();
-    passwordController.dispose();
     super.onClose();
+  }
+
+  void assignRegister({required String username, required String password}) {
+    usernameController.text = username;
+    passwordController.text = password;
+    update();
+  }
+
+  void backButton() {
+    Get.find<LoginController>().assignLogin(
+      username: '',
+      password: '',
+    );
+    Get.offAllNamed(AppRoutes.login);
   }
 
   // Fungsi Register
@@ -46,8 +60,13 @@ class RegisterController extends GetxController {
       users.add({'username': username, 'password': password});
       await storage.write(key: 'users', value: json.encode(users));
 
+      Get.find<LoginController>().assignLogin(
+        username: '',
+        password: '',
+      );
+      await Future.delayed(Duration(seconds: 1));
       Get.snackbar('Sukses', 'Registrasi berhasil');
-      
+
       Get.offAllNamed(AppRoutes.login);
     } catch (e) {
       Get.snackbar('Error', 'Registrasi gagal');

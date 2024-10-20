@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:convert';
 
+import '../../register/controller/register_controller.dart';
+
 class LoginController extends GetxController {
   final LocalStorageService storage = LocalStorageService();
   final Rx<bool> isLoggedIn = false.obs, isPasswordHidden = true.obs;
@@ -18,11 +20,15 @@ class LoginController extends GetxController {
     checkLoginStatus();
   }
 
-@override
+  @override
   void onClose() {
-    usernameController.dispose();
-    passwordController.dispose();
     super.onClose();
+  }
+
+  void assignLogin({required String username, required String password}) {
+    usernameController.text = username;
+    passwordController.text = password;
+    update();
   }
 
   // Fungsi untuk memeriksa status login
@@ -51,9 +57,7 @@ class LoginController extends GetxController {
     if (user != null) {
       currentUsername = username;
       await storage.write(key: 'isLoggedIn', value: 'true');
-      await storage.write(
-          key: 'currentUsername',
-          value: username);
+      await storage.write(key: 'currentUsername', value: username);
       isLoggedIn.value = true;
 
       // Atur username di HomePresenter sebelum mengarahkan ke halaman home
@@ -74,6 +78,10 @@ class LoginController extends GetxController {
 
   // Fungsi untuk pindah ke halaman register
   void toRegister() {
+    Get.find<RegisterController>().assignRegister(
+      username: '',
+      password: '',
+    );
     Get.toNamed(AppRoutes.register);
   }
 }

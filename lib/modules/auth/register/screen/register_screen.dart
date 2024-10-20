@@ -19,6 +19,12 @@ class RegisterScreen extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
               centerTitle: true,
+              leading: IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () {
+                  controller.backButton();
+                },
+              ),
             ),
             body: Padding(
               padding: const EdgeInsets.all(16.0),

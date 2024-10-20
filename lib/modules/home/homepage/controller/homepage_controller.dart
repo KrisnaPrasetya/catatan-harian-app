@@ -6,6 +6,8 @@ import 'package:daily_notes_app/modules/home/notepad_detail/controller/notepad_d
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../auth/login/controller/login_controller.dart';
+
 class HomePageController extends GetxController {
   RxList<Map<String, dynamic>> notepads = <Map<String, dynamic>>[].obs;
   final LocalStorageService storage = LocalStorageService();
@@ -139,11 +141,14 @@ class HomePageController extends GetxController {
   // Fungsi untuk logout
   Future<void> logout() async {
     try {
-      // Hanya hapus status login dan username dari secure storage
       await storage.delete(key: 'isLoggedIn');
       await storage.delete(key: 'currentUsername');
 
-      // Arahkan pengguna ke halaman login
+      Get.find<LoginController>().assignLogin(
+        username: '',
+        password: '',
+      );
+
       Get.offAllNamed('/');
     } catch (e) {
       Get.snackbar('Error', 'Logout gagal, coba lagi');
