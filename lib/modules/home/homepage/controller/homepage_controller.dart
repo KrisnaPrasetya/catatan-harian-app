@@ -103,12 +103,12 @@ class HomePageController extends GetxController {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () => Get.back(),
-                      child: Text('Batal'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.grey[300],
                         foregroundColor: Colors.black,
                         padding: EdgeInsets.symmetric(vertical: 12),
                       ),
+                      child: Text('Batal'),
                     ),
                   ),
                   SizedBox(width: 16),
@@ -120,12 +120,12 @@ class HomePageController extends GetxController {
                         notepads.refresh();
                         Get.back();
                       },
-                      child: Text('Hapus'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red,
                         foregroundColor: Colors.white,
                         padding: EdgeInsets.symmetric(vertical: 12),
                       ),
+                      child: Text('Hapus'),
                     ),
                   ),
                 ],
@@ -148,7 +148,7 @@ class HomePageController extends GetxController {
         username: '',
         password: '',
       );
-
+      notepads.clear();
       Get.offAllNamed('/');
     } catch (e) {
       Get.snackbar('Error', 'Logout gagal, coba lagi');
