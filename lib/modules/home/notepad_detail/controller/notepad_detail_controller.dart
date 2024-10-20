@@ -111,12 +111,12 @@ class NotepadDetailController extends GetxController {
                       size: 48, color: Colors.red),
                   SizedBox(height: 16),
                   Text(
-                    'Perubahan belum disimpan',
+                    'Catatan belum disimpan',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 16),
                   Text(
-                    'Apakah Anda yakin ingin kembali tanpa menyimpan perubahan?',
+                    'Apakah Anda yakin ingin kembali tanpa menyimpan catatan?',
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 24),
